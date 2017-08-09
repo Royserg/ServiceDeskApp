@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2 class="mb-4 mt-4 text-center">Add Incident</h2>
+{% from "includes/_formhelpers.html" import render_field %}
+<form method='POST'>
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ render_field(form.incident, class_="form-control" ) }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.url, class_="form-control" ) }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.description, class_="form-control" ) }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.is_closed, class_="form-control" ) }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+      
+
+{% endblock %}
