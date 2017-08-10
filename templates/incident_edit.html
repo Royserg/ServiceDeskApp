@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% from 'includes/_formhelpers.html' import render_field %}
+
+{% block content %}
+    <div class="container" style='padding:30px; background: #eee'>
+    <h1 class="display-5 text-center">Edit Incident</h1>
+    <form method='POST'>
+   
+        <div class="form-group row">
+           <div class="col-md-7">
+                {{ render_field(form.incident, class_="form-control" ) }}
+            </div>
+            <div class="col-md-5">
+                {{ render_field(form.url, class_="form-control" ) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ render_field(form.description, class_="form-control" ) }}
+        </div>
+        
+        <a href="/incident/{{incident.id}}" class="btn btn-outline-info">Back</a>
+        <button type="submit" class="btn btn-outline-success btn-md">Save</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+

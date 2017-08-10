@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+    <div class="card mt-5 mb-5">
+      <div class="card-header">
+        {{ incident.incident }}
+      </div>
+      <div class="card-block">
+
+        <p class="card-text">{{ incident.description }}</p>
+        <br><br>
+      </div>
+      <div class="card-footer text-center">
+        <a href="/dashboard" class="btn btn-outline-info">Back</a>
+        <a href="/incident/{{ incident.id }}/edit" class="btn btn-outline-warning">Edit</a>
+        <a href="#" class="btn btn-outline-danger">Delete</a>
+      </div>
+    </div>
+{% endblock %}
+
+
+
+

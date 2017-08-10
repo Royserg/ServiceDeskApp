@@ -1,4 +1,6 @@
 from flask import Flask, request, render_template, url_for, redirect, flash, session, logging
+from peewee import *
+from wtfpeewee.orm import model_form
 
 import models
 import forms
@@ -31,12 +33,48 @@ def dashboard():
 
 
 # View Incident
-@app.route('/view_incident/<int:incident_id>')
-def view_incident(incident_id):
-    incident = models.Incident.select().where(models.Incident.id ** incident_id).get()
-    return render_template('view_incident.html', incident=incident)
+@app.route('/incident/<string:id>')
+def view_incident(id):
+    incident = models.Incident.select().where(models.Incident.id ** id).get()
+    return render_template('incident.html', incident=incident)
 
 
+# Edit Incident
+@app.route('/incident/<int:id>/edit', methods=['GET', 'POST'])
+def edit_incident(id):
+#    form = forms.IncidentForm()
+#    incident = models.Incident.select().where(models.Incident.id ** id).get()
+    
+    # Populate incident form fields
+#    form.incident.data = incident.incident
+#    form.description.data = incident.description
+#    form.url.data = incident.url
+    
+    ImForm = model_form(models.Incident)
+    
+    
+    incident = models.Incident.get(id=id)
+    
+    if request.method == 'POST':
+        form = ImForm(request.form, obj=incident)
+        if form.validate():
+            form.populate_obj(incident)
+            incident.save()
+            flash('Your entry has been saved', 'success')
+            return redirect(url_for('view_incident', id=incident.id))
+    else:
+        form = ImForm(obj=incident)
+    return render_template('incident_edit.html', form=form, incident=incident)
+    
+    
+#    if form.validate_on_submit():
+#       
+#        
+#        incident.save()
+#        
+#        flash("Incidend Updated", 'success')
+#        return redirect(url_for('view_incident', id=incident.id))
+#    return render_template('incident_edit.html', form=form, incident=incident)
 
 # App Init
 if __name__ == '__main__':

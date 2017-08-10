@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, optional
 
 
 class IncidentForm(FlaskForm):
-    incident = StringField('IM number', validators=[DataRequired()])
+    incident = StringField('Incident', validators=[DataRequired()])
     url = StringField("Url", validators=[DataRequired()] )
     description = TextAreaField("Description", validators=[DataRequired()] )
     is_closed = BooleanField("Closed?", validators=[optional()])
