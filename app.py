@@ -7,12 +7,6 @@ app = Flask(__name__)
 app.secret_key = "big_secret123"
 
 
-
-
-
-
-    
-    
 # Index Route
 @app.route('/')
 def index():
@@ -34,6 +28,14 @@ def dashboard():
         flash("Incident Added", "success")
         return redirect(url_for("dashboard"))
     return render_template('dashboard.html', form=form, incidents=incidents)
+
+
+# View Incident
+@app.route('/view_incident/<int:incident_id>')
+def view_incident(incident_id):
+    incident = models.Incident.select().where(models.Incident.id ** incident_id).get()
+    return render_template('view_incident.html', incident=incident)
+
 
 
 # App Init

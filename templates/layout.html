@@ -12,12 +12,23 @@
     <body>
         {% include 'includes/_navbar.html' %}
         
+        {% block body %}{% endblock %}
+        
+        
         <div class="container">
             {% include 'includes/_messages.html' %}
             {% block content %}{% endblock %}
+            
+            
+            <hr>
+            <footer class="footer">
+                <p>&copy; ServiceDeskApp, Inc.</p>
+            </footer>
         </div>
         
         
+       
+
         
         
         
