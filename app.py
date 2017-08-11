@@ -42,17 +42,30 @@ def view_incident(id):
 # Edit Incident
 @app.route('/incident/<int:id>/edit', methods=['GET', 'POST'])
 def edit_incident(id):
+    # Not working example
 #    form = forms.IncidentForm()
 #    incident = models.Incident.select().where(models.Incident.id ** id).get()
-    
-    # Populate incident form fields
+#    
+#    # Populate incident form fields
 #    form.incident.data = incident.incident
 #    form.description.data = incident.description
 #    form.url.data = incident.url
+#    
+#    if form.validate_on_submit():
+#        models.Incident.get(id=id).update(
+#            url = form.url.data,
+#            description = form.description.data
+#        ).execute()
+#        
+#
+#        
+#        flash("Incidend Updated", 'success')
+#        return redirect(url_for('view_incident', id=incident.id))
+#    return render_template('incident_edit.html', form=form, incident=incident)
     
+    
+# working example    
     ImForm = model_form(models.Incident)
-    
-    
     incident = models.Incident.get(id=id)
     
     if request.method == 'POST':
@@ -60,21 +73,23 @@ def edit_incident(id):
         if form.validate():
             form.populate_obj(incident)
             incident.save()
-            flash('Your entry has been saved', 'success')
+            flash('Incident Updated', 'success')
             return redirect(url_for('view_incident', id=incident.id))
     else:
         form = ImForm(obj=incident)
     return render_template('incident_edit.html', form=form, incident=incident)
+
+
+
+
+# Delete Incident
+@app.route('/incident/<int:id>/delete', methods=['POST'])
+def delete_incident(id):
+    models.Incident.get(id = id).delete_instance()
     
-    
-#    if form.validate_on_submit():
-#       
-#        
-#        incident.save()
-#        
-#        flash("Incidend Updated", 'success')
-#        return redirect(url_for('view_incident', id=incident.id))
-#    return render_template('incident_edit.html', form=form, incident=incident)
+    flash('Incident deleted', 'success')
+    return redirect(url_for('dashboard'))
+
 
 # App Init
 if __name__ == '__main__':

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group">
-            {{ render_field(form.description, class_="form-control" ) }}
+            {{ render_field(form.description, class_="form-control", id="editor" ) | safe }}
         </div>
         
         <a href="/incident/{{incident.id}}" class="btn btn-outline-info">Back</a>
