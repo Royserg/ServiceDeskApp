@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, optional
 
 
 
+
 class IncidentForm(FlaskForm):
     incident = StringField('Incident', validators=[DataRequired()])
     url = StringField("Url", validators=[DataRequired()] )
