@@ -43,37 +43,13 @@
       {% if incidents.count() == 0 %}
           <h3>No incidents yet</h3>
       {% else %}
-    
-<!-- Card Style
-   
-    <div class="row">
-          {% for incident in incidents %}
-    
-        <div class="col-sm-6">
-       
-            <div class="card card-outline-secondary mb-2">
-              <div class="card-header">
-                  <h5><a href="{{ incident.url }}" target='_blank'>{{ incident.incident }}</a></h5>
-              </div>
-              <div class="card-block">
-                <p class="card-text mb-4">{{ incident.description[:120] | safe }}...</p>
-                  <p class="text-right"><small><strong> {{ incident.created_date.strftime('%d-%m-%Y %H:%M:%S')}} </strong></small></p>
-                <a href="incident/{{ incident.id }}" class="btn btn-secondary">View</a>
-                <a href="{{ incident.url }}" class="btn btn-outline-info" target="_blank">ServiceNow</a>
-              </div>
-            </div>
-    
-        </div>
-    
-          {% endfor %}
-    </div>
--->
      
 <!--  Table Style   -->
     
     <table class="table table-hover">
        <thead class="thead-inverse">
             <tr>
+                <th>Status</th>
                 <th>Case</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -82,7 +58,13 @@
             </tr>
         </thead>
         {% for incident in incidents %}
-            <tr {% if not incident.is_closed  %} class="bg-info" {%endif%}>
+            <tr>
+                <!--  Change status depending on the 'is_closed' parameter  -->
+                {% if not incident.is_closed  %} 
+                    <td><a href='#' class="btn btn-primary btn-md disabled" role="button" aria-disabled="true">Active</a></td>
+                {% else %}
+                    <td><a href='#' class="btn btn-danger btn-md disabled" role="button" aria-disabled="true">Closed</a></td>
+                {%endif%}
                 <td>{{incident.incident}}</td>
                 <td>{{ incident.description[:70] | safe }}...</td>
                 <td>{{ incident.created_date.strftime('%d-%m-%Y %H:%M:%S')}}</td>

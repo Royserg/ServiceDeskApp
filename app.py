@@ -1,12 +1,28 @@
 from flask import Flask, request, render_template, url_for, redirect, flash, session, logging
 from peewee import *
 from wtfpeewee.orm import model_form
+from flask_mail import Mail, Message
 
 import models
 import forms
 
 app = Flask(__name__)
 app.secret_key = "big_secret123"
+
+
+# Mail Config
+app.config['MAIL_SERVER'] = 'smtp.office365.com'
+app.config['MAIL_PORT'] = 587
+app.config['SECURITY_EMAIL_SENDER'] = 'tak jak poniżej'
+app.config['MAIL_DEFAULT_SENDER'] = 'jabil email'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = "Email"
+app.config['MAIL_PASSWORD'] = "Hasło"
+
+mail = Mail(app)
+
+
 
 
 # Index Route
@@ -80,8 +96,6 @@ def edit_incident(id):
     return render_template('incident_edit.html', form=form, incident=incident)
 
 
-
-
 # Delete Incident
 @app.route('/incident/<int:id>/delete', methods=['POST'])
 def delete_incident(id):
@@ -89,6 +103,22 @@ def delete_incident(id):
     
     flash('Incident deleted', 'success')
     return redirect(url_for('dashboard'))
+
+
+# Mail Sender
+@app.route('/mail_sender', methods=['GET', 'POST'])
+def mail_sender():
+    form = forms.MailForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        recipient = form.recipient.data
+        content = form.content.data
+        msg = Message(title, recipients=[recipient], bcc=["jakub_stanio@jabil.com"])
+        msg.html = content
+        mail.send(msg)
+        flash("Email Sent", "success")
+        return redirect(url_for('mail_sender'))
+    return render_template('mail_sender.html', form=form)
 
 
 # App Init
